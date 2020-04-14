@@ -3,4 +3,13 @@
         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 
         ) AS StoreCreditTotal
 	FROM Local_Purchase_Order
-	ORDER BY PriceDifference;</sql><current_tab id="0"/></tab_sql></sqlb_project>
+	ORDER BY PriceDifference;</sql><sql name="LocalShoppingList.sql">WITH StoreCredit AS (
+	SELECT *, SUM(LocalShopPrice)
+		OVER (ORDER BY PriceDifference 
+			ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 
+			) AS StoreCreditTotal
+			FROM Local_Purchase_Order
+			ORDER BY PriceDifference
+		)
+SELECT Title, StoreCreditTotal FROM StoreCredit
+	WHERE StoreCreditTotal &lt; 245;</sql><current_tab id="1"/></tab_sql></sqlb_project>
